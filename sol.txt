@@ -1,0 +1,57 @@
+
+
+2nd problem solution
+
+
+replace all missing values with -999
+1st get the sales for 08,09,10 separately
+and get predication for missing values
+using xgboost which takes care of missing values
+that is
+xgtrain = xgb.DMatrix(train,labels,missing=-999)
+
+The procedure is as follows:
+
+1)Replace missing values by -999
+2) Train regression tree using xgboost for monthy 08 by taking all the features found in the 1st problem+ purchases for other months excluding 08.
+purchase for 08 is the label.
+similary do it for 09 and 10
+
+now you get full data without any missing values
+
+again train for sales of 08,09 and 10 then average the result with the earlier one and that gives the final solution.
+Xgboost parameters can be:
+
+params = {}
+	params["objective"] = "reg:linear"
+	params["eta"] = 0.3
+	params["min_child_weight"] = 2
+	params["subsample"] = 0.7
+	params["colsample_bytree"] = 0.7
+	params["scale_pos_weight"] = 1
+	params["silent"] = 1
+	params["max_depth"] = 9
+
+
+For first problem, parameter tuning for xgboost needs to be done, mostly eta=learning rate and max_depth.
+
+
+feature extraction is not completely done and hence some of the features like conjunction, preposition, helping verbs etc have to be removed before training, tge numbers in description: STYLE: 0005-000037-0005031 are not made use of and should be taken into consideration. Token stemming needs to be done.
+
+Hierarchical clustering can be tried and looking at the data it looks highly promising.
+
+finally Random forest and neural networks can be trained in a similar fashion and averaging can be done. Since there is not enough data stacked generalization is not possible.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
